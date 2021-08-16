@@ -5,11 +5,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import logo from '../../assets/logomini.png';
-import Button from '@material-ui/core/Button';
-import { Badge } from '@material-ui/core';
+import { Badge, Button } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useStateValue } from '../../StateProvider';
+import { auth } from '../../firebase';
+import { actionTypes } from '../../reducer';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +36,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavbarComponent() {
   const classes = useStyles();
-  const [{basket},dispatch] = useStateValue();
+  const [{basket, user}, dispatch] = useStateValue ();
+  const history = useHistory();
+
+  const handleAuth = ()=>{
+    if (user){
+      auth.signOut();
+      dispatch({
+        type: actionTypes.EMPTY_BASKET,
+        basket: [],
+      });
+      dispatch({
+        type: actionTypes.SET_USER,
+        user: null,
+      });
+      history.push("/");
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -52,13 +70,15 @@ export default function NavbarComponent() {
 
           <div className={classes.grow} />
           <Typography variant="h6" color="textPrimary" component="p">
-            Bienvenido
+            Bienvenido, {user ? user.email : "Invitado"}
           </Typography>
           <div className={classes.button}>
-            <Button variant="outlined">
-            <strong>Ingresa</strong>
+            <Link to="/signin">
+            <Button variant="outlined" onClick={handleAuth}>
+            <strong>{user ? "Salir" : "Ingresa"}</strong>
             </Button>
-
+            </Link>
+            
             <Link to="checkout-page">
             <IconButton aria-label="show cart ites" color="inherit">
               <Badge badgeContent={basket?.length} color="secondary" showZero>
