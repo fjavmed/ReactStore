@@ -63,9 +63,10 @@ export default function NavbarComponent() {
           <IconButton>
             <img src={logo}
             className={classes.image}
-             height="50"
+             height="120"
               alt="Logo" />
-          </IconButton>
+              Tienda Lente Nativo
+          </IconButton> 
           </Link>
 
           <div className={classes.grow} />
