@@ -4,7 +4,6 @@ import NavbarComponent from "./components/NavbarComponent";
 import Products from "./components/Productos";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 import CheckoutPage from "./components/CheckoutPage";
-import Product from "./components/CardComponent";
 import SignUp from "./components/Signup";
 import SignIn from "./components/Signin";
 import { useEffect } from "react";
